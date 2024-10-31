@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF to Word Converter</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+
+    <!-- Navbar -->
+    <nav class="bg-blue-600 p-4">
+        <div class="container mx-auto flex items-center justify-between">
+            <a href="{{ url_for('upload_form') }}" class="text-white text-xl font-bold">Easy Converter</a>
+            <div class="hidden md:flex space-x-4">
+                <a href="{{ url_for('upload_form') }}" class="text-white hover:text-gray-200">PDF to Word</a>
+                <a href="{{ url_for('resize_image_form') }}" class="text-white hover:text-gray-200">Resize Image</a>
+                <a class="text-white hover:underline" href="{{ url_for('about') }}">About Us</a>
+            </div>
+            <!-- Mobile menu button -->
+            <div class="md:hidden">
+                <button id="menu-button" class="text-white focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <!-- Mobile menu -->
+        <div id="mobile-menu" class="hidden md:hidden mt-2 space-y-2 bg-blue-500 p-4 rounded-lg">
+            <a href="{{ url_for('upload_form') }}" class="block text-white">PDF to Word</a>
+            <a href="{{ url_for('resize_image_form') }}" class="block text-white">Resize Image</a>
+            <a class="text-white hover:underline" href="{{ url_for('about') }}">About Us</a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="flex items-center justify-center mt-12">
+        <div class="max-w-md w-full bg-white shadow-md rounded-lg p-6">
+            <h2 class="text-2xl font-bold text-center text-blue-600 mb-6">PDF to Word Converter</h2>
+            <form action="{{ url_for('convert_file') }}" method="post" enctype="multipart/form-data" class="flex flex-col items-center space-y-4">
+                <input type="file" name="file" accept=".pdf" class="border border-gray-300 p-2 rounded w-full text-gray-700 focus:outline-none focus:border-blue-500">
+                <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded w-full">Convert</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- JavaScript for Mobile Menu Toggle -->
+    <script>
+        const menuButton = document.getElementById('menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        menuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+    </script>
+</body>
+</html>
