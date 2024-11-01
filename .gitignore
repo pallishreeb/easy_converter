@@ -5,5 +5,3 @@ __pycache__/
 # Ignore uploads folder
 uploads/
 
-# Ignore requirements.txt
-requirements.txt
