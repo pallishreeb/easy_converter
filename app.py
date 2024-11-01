@@ -5,8 +5,10 @@ from werkzeug.utils import secure_filename
 from PIL import Image
 from rembg import remove
 import io
+from PyPDF2 import PdfReader, PdfWriter
 
 app = Flask(__name__)
+app.config['MAX_CONTENT_LENGTH'] = 10 * 1024 * 1024 # 10 MB limit
 app.config['UPLOAD_FOLDER'] = 'uploads'
 
 if not os.path.exists(app.config['UPLOAD_FOLDER']):
@@ -107,7 +109,14 @@ def resize_image():
         output_path = f"output_image.{format_choice}"
         img.save(output_path, format=format_choice.upper())  # Save with the correct format
 
-        return send_file(output_path, as_attachment=True)
+        # Send the file
+        response = send_file(output_path, as_attachment=True)
+
+        # Delete the output file after sending it
+        os.remove(output_path)
+
+        return response
+
 
     return 'Invalid file format. Please upload an image.'
 def allowed_file(filename):
@@ -116,6 +125,67 @@ def allowed_file(filename):
 @app.route('/about')
 def about():
     return render_template('about.html')  # Assuming you save the above HTML as about.html
+@app.route('/split_pdf')
+def split_pdf_form():
+    return render_template('split.html') 
 
+@app.route('/upload_pdf', methods=['POST'])
+def upload_pdf():
+    file = request.files['file']
+    if file and file.filename.endswith('.pdf'):
+        filename = secure_filename(file.filename)
+        filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        file.save(filepath)
+        return send_file(filepath, as_attachment=False)
+
+    return 'Invalid file format. Please upload a PDF.'
+    
+@app.route('/extract_pdf_pages', methods=['POST'])
+def extract_pdf_pages():
+    print("Request Files:", request.files)  # Log the request files
+    print("Request Form:", request.form)    # Log the request form data
+
+    # Get the uploaded file
+    file = request.files.get('file')
+    if file is None:
+        return "No file uploaded.", 400
+
+    print("Uploaded File Name:", file.filename)  # Log the filename
+
+    # Check if the uploaded file is a PDF
+    if file.filename.endswith('.pdf'):
+        try:
+            # Read start and end pages from the form
+            start_page = int(request.form.get('start_page'))
+            end_page = int(request.form.get('end_page'))
+
+            # Read the PDF file
+            reader = PdfReader(file)
+            writer = PdfWriter()
+
+            # Ensure that the page numbers are within valid range
+            if start_page < 1 or end_page < 1 or start_page > len(reader.pages) or end_page > len(reader.pages):
+                return "Invalid page range. Please ensure the pages are within the PDF limits.", 400
+            
+            # Adjust for zero-based index and extract pages
+            for i in range(start_page - 1, end_page):
+                writer.add_page(reader.pages[i])
+
+            # Create a BytesIO stream for the output PDF
+            output = io.BytesIO()
+            writer.write(output)
+            output.seek(0)
+
+            # Send the file as a response
+            response = send_file(output, as_attachment=True, download_name="extracted_pages.pdf", mimetype='application/pdf')
+
+            # No need to delete a physical file as we are using BytesIO
+            
+            return response
+
+        except Exception as e:
+            return f"Error processing PDF: {str(e)}", 500
+    else:
+        return "Invalid file format. Please upload a PDF.", 400
 if __name__ == '__main__':
     app.run(debug=True)

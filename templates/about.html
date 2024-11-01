@@ -6,15 +6,16 @@
     <title>About Us</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body class="bg-gray-100 flex flex-col">
+<body class="bg-gray-100 flex flex-col min-h-screen">
     <!-- Navbar -->
     <nav class="bg-blue-600 p-4">
         <div class="container mx-auto flex items-center justify-between">
             <a href="{{ url_for('upload_form') }}" class="text-white text-xl font-bold">Easy Converter</a>
-            <div class="hidden md:flex space-x-4">
-                <a href="{{ url_for('upload_form') }}" class="text-white hover:text-gray-200">PDF to Word</a>
-                <a href="{{ url_for('resize_image_form') }}" class="text-white hover:text-gray-200">Resize Image</a>
-                <a class="text-white hover:underline" href="{{ url_for('about') }}">About Us</a>
+            <div class="hidden md:flex space-x-6">
+                <a href="{{ url_for('upload_form') }}" class="text-white hover:text-gray-200 font-medium">PDF to Word</a>
+                <a href="{{ url_for('resize_image_form') }}" class="text-white hover:text-gray-200 font-medium">Resize Image</a>
+                <a href="{{ url_for('split_pdf_form') }}" class="text-white hover:text-gray-200 font-medium">Extract Pages</a>
+                <a href="{{ url_for('about') }}" class="text-white hover:text-gray-200 font-medium underline">About Us</a>
             </div>
             <!-- Mobile menu button -->
             <div class="md:hidden">
@@ -29,27 +30,38 @@
         </div>
         <!-- Mobile menu -->
         <div id="mobile-menu" class="hidden md:hidden mt-2 space-y-2 bg-blue-500 p-4 rounded-lg">
-            <a href="{{ url_for('upload_form') }}" class="block text-white">PDF to Word</a>
-            <a href="{{ url_for('resize_image_form') }}" class="block text-white">Resize Image</a>
-            <a class="text-white hover:underline" href="{{ url_for('about') }}">About Us</a>
+            <a href="{{ url_for('upload_form') }}" class="block text-white hover:text-gray-200">PDF to Word</a>
+            <a href="{{ url_for('resize_image_form') }}" class="block text-white hover:text-gray-200">Resize Image</a>
+            <a href="{{ url_for('split_pdf_form') }}" class="block text-white">Extract Pages</a>
+            <a href="{{ url_for('about') }}" class="block text-white hover:text-gray-200 underline">About Us</a>
         </div>
     </nav>
-    <div class="flex flex-col items-center justify-center mt-10">
-        <h2 class="text-3xl font-bold mb-4">About Us</h2>
-        <p class="mb-4 text-gray-700 text-center">
-            Welcome to our application! We are dedicated to providing you with the best image and document manipulation tools.
-        </p>
-        <p class="text-gray-700 text-center">
-            Thank you for using our service, and we hope you have a great experience!
-        </p>
-    </div>
-        <!-- JavaScript for Mobile Menu Toggle -->
-        <script>
-            const menuButton = document.getElementById('menu-button');
-            const mobileMenu = document.getElementById('mobile-menu');
-            menuButton.addEventListener('click', () => {
-                mobileMenu.classList.toggle('hidden');
-            });
-        </script>
+
+    <!-- About Us Section -->
+    <main class="flex-grow flex items-center justify-center">
+        <div class="bg-white shadow-lg rounded-lg p-8 mx-4 md:mx-auto max-w-2xl mt-10 text-center">
+            <h2 class="text-3xl font-bold text-blue-600 mb-4">About Us</h2>
+            <p class="mb-4 text-gray-700">
+                Welcome to our application Easy Converter! We are trying to providing you with the best tools for image and document manipulation.
+            </p>
+            <p class="text-gray-700">
+                Thank you for using our service, and we hope you have a great experience!
+            </p>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-blue-600 text-white p-4 text-center">
+        <p>&copy; 2024 Easy Converter. All rights reserved.</p>
+    </footer>
+
+    <!-- JavaScript for Mobile Menu Toggle -->
+    <script>
+        const menuButton = document.getElementById('menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        menuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+    </script>
 </body>
 </html>

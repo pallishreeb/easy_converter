@@ -24,6 +24,7 @@
             <div class="hidden md:flex space-x-4">
                 <a href="{{ url_for('upload_form') }}" class="text-white hover:text-gray-200">PDF to Word</a>
                 <a href="{{ url_for('resize_image_form') }}" class="text-white hover:text-gray-200">Resize Image</a>
+                <a href="{{ url_for('split_pdf_form') }}" class="text-white hover:text-gray-200 font-medium">Extract Pages</a>
                 <a class="text-white hover:underline" href="{{ url_for('about') }}">About Us</a>
             </div>
             <!-- Mobile menu button -->
@@ -41,6 +42,7 @@
         <div id="mobile-menu" class="hidden md:hidden mt-2 space-y-2 bg-blue-500 p-4 rounded-lg">
             <a href="{{ url_for('upload_form') }}" class="block text-white">PDF to Word</a>
             <a href="{{ url_for('resize_image_form') }}" class="block text-white">Resize Image</a>
+            <a href="{{ url_for('split_pdf_form') }}" class="block text-white">Extract Pages</a>
             <a class="text-white hover:underline" href="{{ url_for('about') }}">About Us</a>
         </div>
     </nav>
@@ -94,6 +96,10 @@
         </form>
     </div>
 
+    <!-- Footer -->
+    <footer class="bg-blue-600 text-white p-4 text-center">
+        <p>&copy; 2024 Easy Converter. All rights reserved.</p>
+    </footer>
     <!-- JavaScript to get original size and handle loading -->
     <script>
         const menuButton = document.getElementById('menu-button');
