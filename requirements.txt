@@ -11,6 +11,7 @@ Flask==3.0.3
 Flask-Cors==5.0.0
 flatbuffers==24.3.25
 fonttools==4.54.1
+gunicorn==23.0.0
 humanfriendly==10.0
 idna==3.10
 imageio==2.36.0
